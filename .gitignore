@@ -1,0 +1,8 @@
+# ide files
+.idea/
+cmake-build-debug/
+
+# ros build directories
+build/
+log/
+install/
