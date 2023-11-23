@@ -1,0 +1,7 @@
+launch:
+
+  - node:
+      pkg: "wheelchair"
+      exec: "speech.py"
+      name: "wheelchair"
+      namespace: "wheelchair"
