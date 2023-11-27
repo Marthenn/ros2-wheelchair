@@ -232,7 +232,125 @@
           </axis>
       </joint>
 
-<!--      TODO: add the four caster wheels-->
+      <frame name = "caster_frame_lf" attached_to="chassis">
+        <pose>1.2 0.9 -1.7 0 0 0</pose>
+      </frame>
+      <link name="caster_wheel_lf">
+        <pose relative_to="caster_frame_lf"/>
+        <visual name='visual'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+            <material>
+                <ambient>0.0 1 0.0 1</ambient>
+                <diffuse>0.0 1 0.0 1</diffuse>
+                <specular>0.0 1 0.0 1</specular>
+            </material>
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+        </collision>
+      </link>
+      <joint name="caster_joint_lf" type="ball">
+        <parent>chassis</parent>
+        <child>caster_wheel_lf</child>
+      </joint>
+
+      <frame name = "caster_frame_rf" attached_to="chassis">
+        <pose>1.2 -0.9 -1.7 0 0 0</pose>
+      </frame>
+      <link name="caster_wheel_rf">
+        <pose relative_to="caster_frame_rf"/>
+        <visual name='visual'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+            <material>
+                <ambient>0.0 1 0.0 1</ambient>
+                <diffuse>0.0 1 0.0 1</diffuse>
+                <specular>0.0 1 0.0 1</specular>
+            </material>
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+        </collision>
+      </link>
+      <joint name="caster_joint_rf" type="ball">
+        <parent>chassis</parent>
+        <child>caster_wheel_rf</child>
+      </joint>
+
+      <frame name = "caster_frame_lb" attached_to="chassis">
+        <pose>-1.2 0.9 -1.7 0 0 0</pose>
+      </frame>
+      <link name="caster_wheel_lb">
+        <pose relative_to="caster_frame_lb"/>
+        <visual name='visual'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+            <material>
+                <ambient>0.0 1 0.0 1</ambient>
+                <diffuse>0.0 1 0.0 1</diffuse>
+                <specular>0.0 1 0.0 1</specular>
+            </material>
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+        </collision>
+      </link>
+      <joint name="caster_joint_lb" type="ball">
+        <parent>chassis</parent>
+        <child>caster_wheel_lb</child>
+      </joint>
+
+      <frame name = "caster_frame_rb" attached_to="chassis">
+        <pose>-1.2 -0.9 -1.7 0 0 0</pose>
+      </frame>
+      <link name="caster_wheel_rb">
+        <pose relative_to="caster_frame_rb"/>
+        <visual name='visual'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+            <material>
+                <ambient>0.0 1 0.0 1</ambient>
+                <diffuse>0.0 1 0.0 1</diffuse>
+                <specular>0.0 1 0.0 1</specular>
+            </material>
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <sphere>
+                    <radius>0.3</radius>
+                </sphere>
+            </geometry>
+        </collision>
+      </link>
+      <joint name="caster_joint_rb" type="ball">
+        <parent>chassis</parent>
+        <child>caster_wheel_rb</child>
+      </joint>
 
       <plugin
           filename="libignition-gazebo-diff-drive-system.so"
