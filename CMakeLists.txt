@@ -10,7 +10,8 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 # include cpp "include" directory
 include_directories(include)
@@ -21,5 +22,9 @@ install(PROGRAMS
         wheelchair/speech.py
         DESTINATION lib/${PROJECT_NAME}
 )
+
+add_executable(odomSub src/OdomSub.cpp)
+ament_target_dependencies(odomSub rclcpp nav_msgs)
+install(TARGETS odomSub DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
