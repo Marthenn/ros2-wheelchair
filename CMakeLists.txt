@@ -20,6 +20,7 @@ include_directories(include)
 ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
         wheelchair/speech.py
+        wheelchair/alert.py
         DESTINATION lib/${PROJECT_NAME}
 )
 
