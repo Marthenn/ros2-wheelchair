@@ -134,19 +134,19 @@
             <visual name='visual'>
                 <geometry>
                     <box>
-                        <size>0.5 10.0 2.0</size>
+                        <size>0.5 10.0 10</size>
                     </box>
                 </geometry>
                 <material>
-                    <ambient>0.0 0.0 1.0 1</ambient>
-                    <diffuse>0.0 0.0 1.0 1</diffuse>
-                    <specular>0.0 0.0 1.0 1</specular>
+                    <ambient>1.0 1.0 0.0 1</ambient>
+                    <diffuse>1.0 1.0 0.0 1</diffuse>
+                    <specular>1.0 1.0 0.0 1</specular>
                 </material>
             </visual>
             <collision name='collision'>
                 <geometry>
                     <box>
-                        <size>0.5 10.0 2.0</size>
+                        <size>0.5 10.0 10</size>
                     </box>
                 </geometry>
             </collision>
@@ -393,7 +393,7 @@
           <wheel_separation>2.6</wheel_separation>
           <wheel_radius>0.8</wheel_radius>
           <odom_publish_frequency>1</odom_publish_frequency>
-          <topic>wheelchair_vel</topic>
+<!--          <topic>cmd_vel</topic>-->
       </plugin>
     </model>
   </world>
