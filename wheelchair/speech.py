@@ -9,7 +9,7 @@ import threading
 
 class Speech(Node):
     def __init__(self):
-        super().__init__('wheelchair')
+        super().__init__('speech_reader')
         self.publisher_ = self.create_publisher(String, 'speech', 10)
         self.recognized = "Nothing"
         timer_period = 0.2
