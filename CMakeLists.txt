@@ -10,13 +10,17 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(nav_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 # include cpp "include" directory
 include_directories(include)
 
-# install python modules
+# generate ROS2 interfaces (cannot be run simultaneously with "ament_python_install_package")
+rosidl_generate_interfaces(${PROJECT_NAME}
+        "action/Move.action"
+)
+
+# install python modules (cannot be run simultaneously with "rosidl_generate_interfaces")
 ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
         wheelchair/speech.py
@@ -24,8 +28,5 @@ install(PROGRAMS
         DESTINATION lib/${PROJECT_NAME}
 )
 
-add_executable(odomSub src/OdomSub.cpp)
-ament_target_dependencies(odomSub rclcpp nav_msgs)
-install(TARGETS odomSub DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
