@@ -12,6 +12,8 @@
 #include "rclcpp_components/register_node_macro.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 #include "wheelchair/visibility_control.h"
 
@@ -49,14 +51,31 @@ private:
   static std::array<std::string, 4> accepted_actions;
   static float allowed_error;
 
+  float getYaw(const tf2::Quaternion & q) {
+    tf2::Matrix3x3 m(q);
+    double roll, pitch, yaw;
+    m.getRPY(roll, pitch, yaw);
+    return yaw;
+  }
+
   void callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
-    float delta_angle = msg->pose.pose.orientation.z - this->last_angle;
-    if (delta_angle > 0) {
-      this->remaining_rotation -= delta_angle;
-    } else {
-      this->remaining_rotation += delta_angle;
+    tf2::Quaternion q(
+        msg->pose.pose.orientation.x,
+        msg->pose.pose.orientation.y,
+        msg->pose.pose.orientation.z,
+        msg->pose.pose.orientation.w);
+    float current_angle = getYaw(q);
+    float delta_angle = current_angle - this->last_angle;
+
+    // Handle wrap-around at -180 and +180 degree points
+    if (delta_angle > M_PI) {
+      delta_angle -= 2 * M_PI;
+    } else if (delta_angle < -M_PI) {
+      delta_angle += 2 * M_PI;
     }
-    this->last_angle = msg->pose.pose.orientation.z;
+
+    this->remaining_rotation -= delta_angle;
+    this->last_angle = current_angle;
   }
 
   rclcpp_action::GoalResponse handle_goal(
@@ -96,7 +115,7 @@ private:
   }
 
   void execute(const std::shared_ptr<GoalHandleMovement> goal_handle) {
-    rclcpp::Rate loop_rate(1);
+    rclcpp::Rate loop_rate(10);
     const auto goal = goal_handle->get_goal();
     auto feedback = std::make_shared<Movement::Feedback>();
     auto & remaining_angle = feedback->angle;
@@ -152,7 +171,7 @@ private:
 };
 
 std::array<std::string, 4> MovementActionServer::accepted_actions = {"forward", "backward", "rotate", "stop"};
-float MovementActionServer::allowed_error = 0.1;
+float MovementActionServer::allowed_error = 0.0872665; //
 }
 
 

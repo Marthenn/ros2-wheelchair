@@ -16,6 +16,8 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(wheelchair_interfaces REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 # include cpp "include" directory
 include_directories(include)
@@ -35,6 +37,8 @@ ament_target_dependencies(action_server
   "rclcpp_components"
   "geometry_msgs"
   "nav_msgs"
+  "tf2"
+  "tf2_geometry_msgs"
 )
 rclcpp_components_register_node(action_server PLUGIN "wheelchair::MovementActionServer" EXECUTABLE movement_action_server)
 install(TARGETS
