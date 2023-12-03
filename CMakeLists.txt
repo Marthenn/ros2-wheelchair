@@ -14,6 +14,7 @@ find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(wheelchair_interfaces REQUIRED)
 
 # include cpp "include" directory
@@ -41,6 +42,19 @@ install(TARGETS
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
+
+# action client
+add_executable(movement_action_client src/Handler.cpp)
+ament_target_dependencies(movement_action_client
+  "wheelchair_interfaces"
+  "rclcpp"
+  "rclcpp_action"
+  "rclcpp_components"
+  "std_msgs"
+)
+install(TARGETS
+  movement_action_client
+  DESTINATION lib/${PROJECT_NAME})
 
 # install python modules
 ament_python_install_package(${PROJECT_NAME})

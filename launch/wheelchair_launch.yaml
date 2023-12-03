@@ -31,3 +31,9 @@ launch:
        exec: "movement_action_server"
        name: "movement_server"
        namespace: "wheelchair"
+
+  - node:
+      pkg: "wheelchair"
+      exec: "movement_action_client"
+      name: "movement_client"
+      namespace: "wheelchair"
