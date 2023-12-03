@@ -10,22 +10,50 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(wheelchair_interfaces REQUIRED)
 
 # include cpp "include" directory
 include_directories(include)
 
-# generate ROS2 interfaces (cannot be run simultaneously with "ament_python_install_package")
-rosidl_generate_interfaces(${PROJECT_NAME}
-        "action/Move.action"
+# action server
+add_library(action_server SHARED
+  src/Movement.cpp)
+target_include_directories(action_server PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_definitions(action_server
+  PRIVATE "WHEELCHAIR_BUILDING_DLL")
+ament_target_dependencies(action_server
+  "wheelchair_interfaces"
+  "rclcpp"
+  "rclcpp_action"
+  "rclcpp_components"
+  "geometry_msgs"
+  "nav_msgs"
 )
+rclcpp_components_register_node(action_server PLUGIN "wheelchair::MovementActionServer" EXECUTABLE movement_action_server)
+install(TARGETS
+  action_server
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
 
-# install python modules (cannot be run simultaneously with "rosidl_generate_interfaces")
+# install python modules
 ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
         wheelchair/speech.py
         wheelchair/alert.py
         DESTINATION lib/${PROJECT_NAME}
+)
+
+# install launch files
+install(DIRECTORY
+        launch
+        DESTINATION share/${PROJECT_NAME}
 )
 
 

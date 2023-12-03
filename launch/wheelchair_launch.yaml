@@ -1,18 +1,6 @@
 launch:
 
   - node:
-      pkg: "wheelchair"
-      exec: "speech.py"
-      name: "speech"
-      namespace: "wheelchair"
-
-  - node:
-      pkg: "wheelchair"
-      exec: "alert.py"
-      name: "alert"
-      namespace: "wheelchair"
-
-  - node:
       pkg: "ros_ign_bridge"
       exec: "parameter_bridge"
       name: "OdomBridge"
@@ -25,3 +13,21 @@ launch:
       name: "MoveBridge"
       namespace: "wheelchair"
       args: "model/wheelchair/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"
+
+  - node:
+      pkg: "wheelchair"
+      exec: "speech.py"
+      name: "speech"
+      namespace: "wheelchair"
+
+  - node:
+      pkg: "wheelchair"
+      exec: "alert.py"
+      name: "alert"
+      namespace: "wheelchair"
+
+  - node:
+       pkg: "wheelchair"
+       exec: "movement_action_server"
+       name: "movement_server"
+       namespace: "wheelchair"
