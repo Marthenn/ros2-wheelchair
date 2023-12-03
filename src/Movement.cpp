@@ -46,7 +46,7 @@ private:
   float last_angle = 0.0;
   std::string movement = "";
 
-  static std::array<std::string, 3> accepted_actions;
+  static std::array<std::string, 4> accepted_actions;
   static float allowed_error;
 
   void callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
@@ -86,6 +86,8 @@ private:
       msg.angular.z = 0.0;
       this->publisher_->publish(msg);
 
+      RCLCPP_INFO(this->get_logger(), "Goal canceled");
+
       return rclcpp_action::CancelResponse::ACCEPT;
   }
 
@@ -111,27 +113,29 @@ private:
       msg.linear.x = -5.0;
       msg.angular.z = 0.0;
       this->publisher_->publish(msg);
-    } else {
+    } else if (this->movement == "stop") {
       geometry_msgs::msg::Twist msg;
       msg.linear.x = 0.0;
       msg.angular.z = 0.0;
-
-      if (this->remaining_rotation > 0) {
-        msg.angular.z = 0.5;
-      } else {
-        msg.angular.z = -0.5;
-      }
       this->publisher_->publish(msg);
-
+    } else {
       while(std::abs(this->remaining_rotation) > MovementActionServer::allowed_error) {
+        RCLCPP_INFO(this->get_logger(), "Remaining rotation: %f", this->remaining_rotation);
         if (!rclcpp::ok()) {
           return;
         }
+        geometry_msgs::msg::Twist msg;
+        msg.linear.x = 0.0;
+        msg.angular.z = this->remaining_rotation > 0 ? 0.5 : -0.5;
+        this->publisher_->publish(msg);
+
         remaining_angle = this->remaining_rotation;
         goal_handle->publish_feedback(feedback);
         loop_rate.sleep();
       }
 
+      geometry_msgs::msg::Twist msg;
+      msg.linear.x = 0.0;
       msg.angular.z = 0.0;
       this->publisher_->publish(msg);
     }
@@ -147,7 +151,7 @@ private:
   }
 };
 
-std::array<std::string, 3> MovementActionServer::accepted_actions = {"forward", "backward", "rotate"};
+std::array<std::string, 4> MovementActionServer::accepted_actions = {"forward", "backward", "rotate", "stop"};
 float MovementActionServer::allowed_error = 0.1;
 }
 
