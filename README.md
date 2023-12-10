@@ -38,3 +38,7 @@
 5. Source this repo
 6. Run the gazebo simulation first `gazebo ign world/gazebo.xml` (if you run it from the repository's root)
 7. Run the launch file for this repo `ros2 launch wheelchair wheelchair_launch.yaml` (run it from the repository's root for the alert audio file)
+
+## Disclaimer
+1. This package is intended to combine both python and c++ in ROS2 package for me to learn developing a ROS2 package that combines both programming language
+2. This package is for the purpose of an analysis via simulation assignment
